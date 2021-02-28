@@ -19,15 +19,17 @@
   $data = json_decode(file_get_contents("php://input"));
 
   // Set ID to update
-  $post->ISBN_Code= $data->ISBN_Code;
+//$post->ISBN_Code = isset($_GET['ISBN_Code']) ? $_GET['ISBN_Code'] : die();
+  $post->ISBN_Code = $_GET['ISBN_Code'];
   $post->Book_Title = $data->Book_Title;
+  $post->Author_id = $data ->Author_id;
   $post->Category_id = $data->Category_id;
   $post->status = $data->status;
   $post->Publication_year= $data->Publication_year;
   
 
   // Update post
-  if($post->update_book()) {
+  if($post->update_book_put($_GET['ISBN_Code'])){
     echo json_encode(
       array('message' => 'Book Data Updated')
     );
