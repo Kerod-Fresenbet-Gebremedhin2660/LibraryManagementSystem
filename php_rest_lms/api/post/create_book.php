@@ -18,7 +18,7 @@
   $data = json_decode(file_get_contents("php://input"));
   $post->ISBN_Code = $data->ISBN_Code;
   $post->status = $data->status;
-  //$post->Book_Title = $data ->Book_Title;
+  $post->Book_Title = $data ->Book_Title;
   $post->Author_id=$data->Author_id;
   $post->Category_id = $data ->Category_id;
   $post->Publication_year = $data ->Publication_year;

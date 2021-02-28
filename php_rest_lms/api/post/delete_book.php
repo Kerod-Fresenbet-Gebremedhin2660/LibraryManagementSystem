@@ -24,11 +24,11 @@
   // Delete post
   if($post->delete_book()) {
     echo json_encode(
-      array('message' => 'Post Deleted')
+      array('message' => 'Book Deleted')
     );
   } else {
     echo json_encode(
-      array('message' => 'Post Not Deleted')
+      array('message' => 'Book Not Deleted')
     );
   }
 

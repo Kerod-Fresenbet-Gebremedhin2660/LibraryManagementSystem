@@ -12,18 +12,25 @@
     public $Category_id;
     public $ISBN_Code;
     public $Book_Title;
-//    public $category_name;
-//    public $title;
-//    public $body;
-//    public $author;
-//    public $created_at;
+    public $Book_img;
+    public $Book_desc;
+
+                     
+    
+    ///---Related to Borrower---///
+    public $Borrower_id;
+    public $Book_id;
+    public $Borrowed_From;
+    public $Borrowed_TO;
+    public $Actual_Return_Date;
+    public $Issued_by;
 
     // Constructor with DB
     public function __construct($db) {
       $this->conn = $db;
     }
 
-    // Get Posts
+    // Get Books
     public function read() {
       // Create query
       $query = 'SELECT * FROM '.$this->table[0];
@@ -36,11 +43,23 @@
 
       return $stmt;
     }
+    public function read_books() {
+      // Create query
+      $query = 'SELECT * FROM '.$this->table[1];
+      
+      // Prepare statement
+      $stmt = $this->conn->prepare($query);
 
-    // Get Single Post
+      // Execute query
+      $stmt->execute();
+
+      return $stmt;
+    }
+
+    // Get Single Book
     public function read_single($Book_Title) {
           // Create query
-          $query = 'SELECT `ISBN_Code`, `status`, `Book_Title`, `Category_id`, `Publication_year` FROM '.$this->table[1].' WHERE Book_Title = ?';
+          $query = 'SELECT `ISBN_Code`, `status`, `Book_Title`,`Book_desc`,`Book_img`, `Category_id`, `Publication_year` FROM '.$this->table[1].' WHERE Book_Title = ?';
           // Prepare statement
           $stmt = $this->conn->prepare($query);
 
@@ -56,6 +75,8 @@
           $this->ISBN_Code = $row['ISBN_Code'];
           $this->status = $row['status'];
           $this->Book_Title = $row['Book_Title'];
+          $this->Book_desc= $row['Book_desc'];
+          $this->Book_img= $row['Book_img'];
           $this->Category_id = $row['Category_id'];
           $this->Publication_year = $row['Publication_year'];
           
@@ -63,7 +84,7 @@
     }
     public function read_single_ISBN($ISBN_Code) {
           // Create query
-          $query = 'SELECT `ISBN_Code`, `status`, `Book_Title`, `Category_id`, `Publication_year` FROM '.$this->table[1].' WHERE ISBN_Code = ?';
+          $query = 'SELECT `ISBN_Code`, `status`, `Book_Title`,`Book_desc`,`Book_img`, `Category_id`, `Publication_year` FROM '.$this->table[1].' WHERE ISBN_Code = ?';
           // Prepare statement
           $stmt = $this->conn->prepare($query);
 
@@ -79,6 +100,8 @@
           $this->ISBN_Code = $row['ISBN_Code'];
           $this->status = $row['status'];
           $this->Book_Title = $row['Book_Title'];
+          $this->Book_desc = $row['Book_desc'];
+          $this->Book_img = $row['Book_img'];
           $this->Category_id = $row['Category_id'];
           $this->Publication_year = $row['Publication_year'];
           
@@ -167,8 +190,7 @@
           }
           
     }
-    // // Update Post
-     public function update_author() {
+    public function update_author() {
     //       // Create query
           $query = 'UPDATE ' . $this->table[0] . '
                                  SET Author_Name = :Author_Name WHERE Author_id= :Author_id';
@@ -199,18 +221,12 @@
     public function update_book() {
     //       // Create query
           $query = 'UPDATE ' . $this->table[1] . '
-                                 SET ISBN_Code= :ISBN_Code,
-                                 Book_Title = :Book_Title,
-                                 Category_id = :Category_id,
-                                 status = :status,
-                                 Pulblication_year= :Publication_year,
-                                 WHERE Author_id= :Author_id';
+                                 SET ISBN_Code= :ISBN_Code, Book_Title = :Book_Title, Category_id = :Category_id, status = :status, Publication_year= :Publication_year WHERE ISBN_Code= :ISBN_Code';
 
-    //       // Prepare statement
+
           $stmt = $this->conn->prepare($query);
 
-    //       // Clean data
-          $this->Author_id = htmlspecialchars(strip_tags($this->Author_id));
+
           $this->ISBN_Code = htmlspecialchars(strip_tags($this->ISBN_Code));
           $this->Book_Title = htmlspecialchars(strip_tags($this->Book_Title));
           $this->Category_id = htmlspecialchars(strip_tags($this->Category_id));
@@ -218,8 +234,7 @@
           $this->Publication_year= htmlspecialchars(strip_tags($this->Publication_year));
           
 
-    //       // Bind data
-           $stmt->bindParam(':Author_id', $this->Author_id);
+
            $stmt->bindParam(':ISBN_Code', $this->ISBN_Code);
            $stmt->bindParam(':Book_Title', $this->Book_Title);
            $stmt->bindParam(':Category_id', $this->Category_id);
@@ -237,10 +252,7 @@
 
            return false;
     }
-//    
-//
-//  // // Delete Post
-     public function delete_book(){
+    public function delete_book(){
     //       // Create query
            $query = 'DELETE FROM ' . $this->table[1] . ' WHERE ISBN_Code = :ISBN_Code';
 
@@ -288,5 +300,98 @@
     //       // Print error if something goes wrong
           
      }
-    
+    public function read_borrower(){
+         $query = 'SELECT * FROM '.$this->table[2];
+         $stmt = $this->conn->prepare($query);
+         if($stmt->execute()) {
+              return $stmt;
+          }else{
+               printf("Error: %s.\n", $stmt->error);
+
+          return false;
+          }
+     }
+     public function delete_borrower(){
+       $query = 'DELETE FROM' .$this->table[2]. ' WHERE Borrower_id = '.$this->Borrower_id.'';
+       $stmt = $this->conn->prepare($query);
+       $this->Borrower_id = htmlspecialchars(strip_tags($this->Borrower_id));
+       if($stmt->execute()) {
+              return true;
+           }else{
+                printf("Error: %s.\n", $stmt->error);
+ 
+           return false;
+           }
+      }
+      public function update_borrower(){
+             //       // Create query
+          $query = 'UPDATE ' . $this->table[2] . '
+          SET Book_id= :Book_id, Borrowed_From = :Borrowed_From, Borrowed_TO = :Borrowed_TO, Actual_Return_Date = :Actual_Return_Date, Issued_by= :Issued_by WHERE Borrower_id= :Borrower_id';
+//       // Prepare statement
+          $stmt = $this->conn->prepare($query);
+
+//       // Clean data
+              $this->Borrower_id = htmlspecialchars(strip_tags($this->Borrower_id));
+              $this->Book_id = htmlspecialchars(strip_tags($this->Book_id));
+              $this->Borrowed_From = htmlspecialchars(strip_tags($this->Borrowed_From));
+              $this->Borrowed_TO = htmlspecialchars(strip_tags($this->Borrowed_TO));
+              $this->Actual_Return_Date = htmlspecialchars(strip_tags($this->Actual_Return_Date));
+              $this->Issued_by= htmlspecialchars(strip_tags($this->Issued_by));
+
+
+//       // Bind data
+              $stmt->bindParam(':Borrower_id', $this->Borrower_id);
+              $stmt->bindParam(':Book_id', $this->Book_id);
+              $stmt->bindParam(':Borrowed_From', $this->Borrowed_From);
+              $stmt->bindParam(':Borrowed_TO', $this->Borrowed_TO);
+              $stmt->bindParam(':Actual_Return_Date', $this->Actual_Return_Date);
+              $stmt->bindParam(':Issued_by', $this->Issued_by);
+
+
+//       // Execute query
+              if($stmt->execute()) {
+              return true;
+              }
+
+// Print error if something goes wrong
+              printf("Error: %s.\n", $stmt->error);
+
+              return false;
+
+      }
+   public function create_borrower(){
+       $query = 'INSERT INTO ' . $this->table[2] . ' SET Borrower_id= :Borrower_id, '
+       . 'Book_id= :Book_id, '
+       . 'Borrowed_From= :Borrowed_From, '
+       . 'Borrowed_TO= :Borrowed_TO, '
+       . 'Actual_Return_Date= :Actual_Return_Date, '
+       . 'Issued_by= :Issued_by';
+
+       $stmt = $this->conn->prepare($query);
+          
+
+       // Clean data
+       $this->Borrower_id = htmlspecialchars(strip_tags($this->Borrower_id));
+       $this->Book_id = htmlspecialchars(strip_tags($this->Book_id));
+       $this->Borrowed_From = htmlspecialchars(strip_tags($this->Borrowed_From));
+       $this->Borrowed_TO = htmlspecialchars(strip_tags($this->Borrowed_TO));
+       $this->Actual_Return_Date = htmlspecialchars(strip_tags($this->Actual_Return_Date));
+       $this->Issued_by = htmlspecialchars(strip_tags($this->Issued_by));
+       
+       
+
+       // Bind data
+       $stmt->bindParam(':Borrower_id', $this->Borrower_id);
+       $stmt->bindParam(':Book_id', $this->Book_id);
+       $stmt->bindParam(':Borrowed_From', $this->Borrowed_From);
+       $stmt->bindParam(':Borrowed_TO', $this->Borrowed_TO);
+       $stmt->bindParam(':Actual_Return_Date', $this->Actual_Return_Date);
+       $stmt->bindParam(':Issued_by', $this->Issued_by);
+       
+
+       // Execute query
+       if($stmt->execute()){
+           return true;
+       }
+   }
   }

@@ -2,7 +2,7 @@
   // Headers
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: POST');
+  header('Access-Control-Allow-Methods: DELETE');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
   include_once '../../config/Database.php';
@@ -15,23 +15,19 @@
   // Instantiate blog post object
   $post = new Post($db);
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
-
-  $post->Author_id = $data->Author_id;
-  $post->Author_Name = $data->Author_Name;
-  
-  
   
 
-  // Create post
-  if($post->create_author()){
-      echo json_encode(
-      array('message' => 'Author Addded')
+  // Set ID to update
+  $post->ISBN_Code = $data->ISBN_Code;
+
+  // Delete post
+  if($post->delete_book()) {
+    echo json_encode(
+      array('message' => 'Book Deleted')
     );
-  }else{
-      echo json_encode(
-      array('message' => 'Author Not Addded')
+  } else {
+    echo json_encode(
+      array('message' => 'Book Not Deleted')
     );
   }
 

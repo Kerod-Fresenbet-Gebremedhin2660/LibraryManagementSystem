@@ -2,7 +2,7 @@
   // Headers
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: POST');
+  header('Access-Control-Allow-Methods: PUT');
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
   include_once '../../config/Database.php';
@@ -18,20 +18,22 @@
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  $post->Author_id = $data->Author_id;
-  $post->Author_Name = $data->Author_Name;
-  
-  
+  // Set ID to update
+  $post->ISBN_Code= $data->ISBN_Code;
+  $post->Book_Title = $data->Book_Title;
+  $post->Category_id = $data->Category_id;
+  $post->status = $data->status;
+  $post->Publication_year= $data->Publication_year;
   
 
-  // Create post
-  if($post->create_author()){
-      echo json_encode(
-      array('message' => 'Author Addded')
+  // Update post
+  if($post->update_book()) {
+    echo json_encode(
+      array('message' => 'Book Data Updated')
     );
-  }else{
-      echo json_encode(
-      array('message' => 'Author Not Addded')
+  } else {
+    echo json_encode(
+      array('message' => 'Book Data Not Updated')
     );
   }
 
