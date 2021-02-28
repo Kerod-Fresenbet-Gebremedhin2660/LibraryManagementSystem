@@ -25,6 +25,8 @@
     'ISBN_Code' => $post->ISBN_Code,
     'status' => $post->status,
     'Book_Title' => $post -> Book_Title,
+    'Book_desc' => $post->Book_desc,
+    'Book_img' => $post->Book_img,
     'Category_id' => $post ->Category_id,
     'Publication_year' => $post->Publication_year,
    );

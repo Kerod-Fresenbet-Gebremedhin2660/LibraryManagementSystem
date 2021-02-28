@@ -9,11 +9,8 @@
   // Instantiate DB & connect
   $database = new Database();
   $db = $database->connect();
-  
   $post = new Post($db);
-  
   $result = $post->read_books();
-  
   $num = $result->rowCount();
 
   

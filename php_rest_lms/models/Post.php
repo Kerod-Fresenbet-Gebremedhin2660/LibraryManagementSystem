@@ -84,7 +84,7 @@
     }
     public function read_single_ISBN($ISBN_Code) {
           // Create query
-          $query = 'SELECT `ISBN_Code`, `status`, `Book_Title`,`Book_desc`,`Book_img`, `Category_id`, `Publication_year` FROM '.$this->table[1].' WHERE ISBN_Code = ?';
+          $query = 'SELECT `ISBN_Code`, `status`,`Author_id`, `Book_Title`,`Book_desc`,`Book_img`, `Category_id`, `Publication_year` FROM '.$this->table[1].' WHERE ISBN_Code = ?';
           // Prepare statement
           $stmt = $this->conn->prepare($query);
 
@@ -99,6 +99,7 @@
           // Set properties
           $this->ISBN_Code = $row['ISBN_Code'];
           $this->status = $row['status'];
+          $this->Author_id=$row['Author_id'];
           $this->Book_Title = $row['Book_Title'];
           $this->Book_desc = $row['Book_desc'];
           $this->Book_img = $row['Book_img'];
@@ -127,7 +128,8 @@
           $this->Category_id = $row['Category_id'];
           $this->Publication_year = $row['Publication_year'];
     }
-    public function create_author() {
+    public function create_author(): bool
+    {
     //    // Create query
           $query = 'INSERT INTO ' . $this->table[0] . ' SET Author_id = :Author_id, Author_Name= :Author_Name';
           
@@ -153,7 +155,8 @@
           
           
      }
-    public function create_book(){
+    public function create_book(): bool
+    {
          $query = 'INSERT INTO ' . $this->table[1] . ' SET ISBN_Code= :ISBN_Code, '
                  . 'Book_Title= :Book_Title, '
                  . 'Category_id= :Category_id, '
@@ -190,7 +193,8 @@
           }
           
     }
-    public function update_author() {
+    public function update_author(): bool
+    {
     //       // Create query
           $query = 'UPDATE ' . $this->table[0] . '
                                  SET Author_Name = :Author_Name WHERE Author_id= :Author_id';
@@ -218,7 +222,8 @@
 
            return false;
     }
-    public function update_book() {
+    public function update_book(): bool
+    {
     //       // Create query
           $query = 'UPDATE ' . $this->table[1] . '
                                  SET ISBN_Code= :ISBN_Code, Book_Title = :Book_Title, Category_id = :Category_id, status = :status, Publication_year= :Publication_year WHERE ISBN_Code= :ISBN_Code';
@@ -252,7 +257,8 @@
 
            return false;
     }
-    public function delete_book(){
+    public function delete_book(): bool
+    {
     //       // Create query
            $query = 'DELETE FROM ' . $this->table[1] . ' WHERE ISBN_Code = :ISBN_Code';
 
@@ -275,7 +281,8 @@
 
           return false;
      }
-     public function delete_author(){
+    public function delete_author(): bool
+     {
          //       // Create query
            $query = 'DELETE FROM ' . $this->table[0] . ' WHERE Author_id = '.$this->Author_id.'';
 
@@ -300,7 +307,8 @@
     //       // Print error if something goes wrong
           
      }
-    public function read_borrower(){
+    public function read_borrower(): bool
+    {
          $query = 'SELECT * FROM '.$this->table[2];
          $stmt = $this->conn->prepare($query);
          if($stmt->execute()) {
@@ -311,7 +319,8 @@
           return false;
           }
      }
-     public function delete_borrower(){
+    public function delete_borrower(): bool
+     {
        $query = 'DELETE FROM' .$this->table[2]. ' WHERE Borrower_id = '.$this->Borrower_id.'';
        $stmt = $this->conn->prepare($query);
        $this->Borrower_id = htmlspecialchars(strip_tags($this->Borrower_id));
@@ -323,7 +332,8 @@
            return false;
            }
       }
-      public function update_borrower(){
+    public function update_borrower(): bool
+      {
              //       // Create query
           $query = 'UPDATE ' . $this->table[2] . '
           SET Book_id= :Book_id, Borrowed_From = :Borrowed_From, Borrowed_TO = :Borrowed_TO, Actual_Return_Date = :Actual_Return_Date, Issued_by= :Issued_by WHERE Borrower_id= :Borrower_id';
@@ -359,7 +369,8 @@
               return false;
 
       }
-   public function create_borrower(){
+    public function create_borrower(): bool
+   {
        $query = 'INSERT INTO ' . $this->table[2] . ' SET Borrower_id= :Borrower_id, '
        . 'Book_id= :Book_id, '
        . 'Borrowed_From= :Borrowed_From, '
@@ -394,4 +405,14 @@
            return true;
        }
    }
+    public function read_borrower_book(){
+        $query = 'SELECT Borrower_id, Book_id, book.Book_Title, book.Book_desc, book.Book_img, Borrowed_From, Borrowed_TO, Actual_Return_Date, Issued_by FROM borrower LEFT JOIN book ON borrower.Book_id=book.ISBN_Code';
+        $stmt = $this->conn->prepare($query);
+        if($stmt->execute()) {
+            return $stmt;
+        }else{
+            printf("Error: %s.\n", $stmt->error);
+            return false;
+        }
+    }
   }

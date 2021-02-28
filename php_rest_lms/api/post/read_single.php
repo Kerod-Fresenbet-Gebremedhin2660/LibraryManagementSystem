@@ -23,6 +23,7 @@
   $post_arr = array(
     'ISBN_Code' => $post->ISBN_Code,
     'status' => $post->status,
+    'Author_id' => $post->Author_id,
     'Book_Title' => $post -> Book_Title,
     'Book_desc' => $post->Book_desc,
     'Book_img' => $post->Book_img,
