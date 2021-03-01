@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:library_ystem/authentication/signup.dart';
-import 'package:library_ystem/constants.dart/constants.dart';
-import 'package:library_ystem/pages/homepage.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:library_ystem/pages/homepage.dart';
-// import '../constants.dart/constants.dart';
+import 'package:library_system/export.dart';
+
 
 class Authentication extends StatefulWidget {
   @override

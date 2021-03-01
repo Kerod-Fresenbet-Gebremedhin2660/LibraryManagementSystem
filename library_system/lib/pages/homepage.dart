@@ -1,33 +1,28 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../pages/tab.dart';
-import '../navigation/navigation.dart';
-import 'customcard.dart';
+import 'package:library_system/export.dart';
+
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class HomePage extends StatelessWidget with NavigationStates {
+class HomePage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Scaffold(
-      body: BlocProvider<NavigationBloc>(
-        create: (context) => NavigationBloc(),
-        child: Stack(
-          children: <Widget>[
-            BlocBuilder<NavigationBloc, NavigationStates>(
-              builder: (context, navigationState) {
-                return navigationState as Widget;
-              },
-            ),
+      // body: BlocProvider<NavigationBloc>(
+      //   create: (context) => NavigationBloc(),
+      //   child: Stack(
+      //     children: <Widget>[
+      //       BlocBuilder<NavigationBloc, NavigationStates>(
+      //         builder: (context, navigationState) {
+      //           return navigationState as Widget;
+      //         },
+      //       ),
+      body:
             Tabs(),
-            // ListView(
-            //       children: [Content(), Content(), Content(), Content()],
-            //     ),
-          ],
-        ),
-      ),
+        );
       
-    );
+      
+    
   }
 }

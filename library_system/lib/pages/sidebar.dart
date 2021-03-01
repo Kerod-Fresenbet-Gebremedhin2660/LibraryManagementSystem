@@ -1,16 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:library_system/Adminitrator/settings.dart';
+import 'package:library_system/Author/authorspage.dart';
 import 'package:library_system/export.dart';
 
-
-//import 'menu_item.dart';
+import 'menu_item.dart';
 
 // ignore: camel_case_types
-class Drawer2_ extends StatelessWidget {
-// final Book book;
-//   Drawer2_({@required this.book});
-
+class Drawer_ extends StatelessWidget {
   @override
   Widget build(context) {
     return Drawer(
@@ -28,25 +25,15 @@ class Drawer2_ extends StatelessWidget {
                     height: 10,
                   ),
                   ListTile(
-                    title: Row(children: [
-                      Text(
-                        "NAME",
-                        //this.book.bookTitle,
-                        style: TextStyle(
-                            color: secondColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800),
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(left: 3),
-                          child: Icon(
-                            Icons.done,
-                            size: 20,
-                            color: secondColor,
-                          ))
-                    ]),
+                    title: Text(
+                      "Name",
+                      style: TextStyle(
+                          color: secondColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800),
+                    ),
                     subtitle: Text(
-                      "Email@gmail.com",
+                      "Email",
                       style: TextStyle(
                         color: twelfthColor,
                         fontSize: 14,
@@ -68,24 +55,55 @@ class Drawer2_ extends StatelessWidget {
             title: "Home",
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Tabs1()));
+                  context, MaterialPageRoute(builder: (context) => Tabs()));
             },
           ),
           MenuItem(
-            icon: Icons.settings,
-            title: "settings",
+            icon: Icons.person,
+            title: "Authors",
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AuthorPage()));
+            },
+          ),
+          MenuItem(
+            icon: Icons.book,
+            title: "Borrowed",
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BorrowedPage()));
+            },
+          ),
+          MenuItem(
+            icon: Icons.bookmark,
+            title: "Have Read",
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AdminSettings()));
+                  context, MaterialPageRoute(builder: (context) => Tabs()));
+            },
+          ),
+          Divider(
+            height: 12,
+            thickness: 0.5,
+            // color: fourthColor.withOpacity(0.3),
+            indent: 32,
+            endIndent: 32,
+          ),
+          MenuItem(
+            icon: Icons.settings,
+            title: "Settings",
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Settings()));
             },
           ),
           MenuItem(
             icon: Icons.logout,
-            title: "Logout",
+            title: "LOGOUT",
             onTap: () {
               exit(0);
             },
-          )
+          ),
         ],
       ),
     );
