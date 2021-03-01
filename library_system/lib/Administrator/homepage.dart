@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_system/Adminitrator/tab.dart';
+import 'package:library_system/Administrator/tab.dart';
 import 'package:library_system/export.dart';
 
 class HomePage2 extends StatelessWidget {

@@ -1,4 +1,4 @@
-export 'Adminitrator/admin.dart';
+export 'Administrator/admin.dart';
 export 'authentication/auth.dart';
 export 'pages/pages.dart';
 export 'package:library_system/books/books.dart';

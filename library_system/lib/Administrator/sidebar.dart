@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:library_system/Adminitrator/settings.dart';
+import 'package:library_system/Administrator/settings.dart';
 import 'package:library_system/export.dart';
 
 
